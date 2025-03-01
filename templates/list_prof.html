@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% macro print_list(lst) -%}
+        {% for prof in prof_lst %}
+            <li>{{ prof }}</li>
+        {% endfor %}
+    {%- endmacro %}
+    {% if list == 'ul' %}
+        <ul>
+            {{ print_list(prof_lst) }}
+        </ul>
+    {% else %}
+        <ol>
+            {{ print_list(prof_lst) }}
+        </ol>
+    {% endif %}
+{% endblock %}
