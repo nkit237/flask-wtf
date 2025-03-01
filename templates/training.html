@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if 'инженер' in prof or 'строитель' in prof %}
+      <h1>Инженерные тренажеры</h1>
+      <img class="img-fluid" src="https://sun9-88.userapi.com/impg/1iFxgxJ6TZtpvlmEIOpEowW5_9qPACzGjyLCbQ/G63e6tdqqag.jpg?size=550x390&quality=96&sign=8660dfdaaeb941dd627bbb05909b99f9&type=album" alt="">
+    {% else %}
+      <h1>Научные симуляторы</h1>
+      <img class="img-fluid" src="https://www.carbodydesign.com/media/2016/12/Driving-Simulator.jpg" alt="">
+    {% endif %}
+
+{% endblock %}
