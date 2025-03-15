@@ -1,9 +1,11 @@
+from multiprocessing.pool import job_counter
+
 from flask import Flask, render_template, redirect, request, make_response, session
 from flask_login import LoginManager, login_user, logout_user, login_required
 from data import db_session
 from data.jobs import Jobs
 from data.users import User
-from forms import RegisterForm, LoginForm
+from forms import RegisterForm, LoginForm, AddJob
 
 db_session.global_init("db/mars_explorer.db")
 app = Flask(__name__)
@@ -141,6 +143,30 @@ def login():
 def logout():
     logout_user()
     return redirect("/")
+
+
+@app.route('/add_job', methods=['GET', 'POST'])
+@login_required
+def add_job():
+    form = AddJob()
+    if form.validate_on_submit():
+        job = Jobs(
+            job = form.job.data,
+            team_leader = form.team_leader.data,
+            work_size=form.work_size.data,
+            collaborators = form.collaborators.data,
+            start_date = form.start_date.data,
+            end_date=form.end_date.data,
+            is_finished=form.is_finished.data
+        )
+        db_sess = db_session.create_session()
+        db_sess.add(job)
+        db_sess.commit()
+        return redirect('/')
+    # db_sess = db_session.create_session()
+    # users = db_sess.query(User).all()
+    # form.team_leader.choices = [(user.id, user.name) for user in users]
+    return render_template('add_job.html', title='Доб раб', form=form)
 
 
 if __name__ == '__main__':
