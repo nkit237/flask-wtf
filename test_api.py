@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from requests import get, post
+from requests import get, post, delete
 
 print(get('http://localhost:8080/api/jobs').json())
 
@@ -17,3 +17,6 @@ print(post('http://localhost:8080/api/jobs', json=dict(
         collaborators='3',
         start_date=str(datetime.now().date()),
 )).json())
+
+print(delete('http://localhost:8080/api/jobs/999').json())
+print(delete('http://localhost:8080/api/jobs/1').json())
