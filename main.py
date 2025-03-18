@@ -1,59 +1,24 @@
-from flask import Flask, render_template
+from data import db_session
+from data.jobs import Jobs
+from faker import Faker
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
-
-
-@app.route('/')
-@app.route('/index')
-def index():
-    return render_template('base.html', title='Заготовка')
+fake = Faker()
 
 
-@app.route('/training/<prof>')
-def training(prof):
-    return render_template('training.html', title='Тренажеры', prof=prof)
+def main():
+    db_session.global_init("db/mars_explorer.db")
 
+    session = db_session.create_session()
 
-@app.route('/list_prof/<list>')
-def list_prof(list):
-    prof = [
-        'военные',
-        'охрана',
-        'производители оружия',
-        'испытатели',
-        'мясники',
-        'телохранители',
-        'механики',
-        'инженеры',
-        'дантисты',
-        'повара',
-        'хирурги',
-        'диктаторы',
-    ]
-    data = dict(
-        title='Список профессий',
-        list=list,
-        prof_lst=prof,
+    job = Jobs(
+        team_leader=1,
+        job='deployment of residential modules 1 and 2',
+        work_size=15,
+        collaborators='2, 3',
     )
-    return render_template('list_prof.html', **data)
-
-
-@app.route('/answer')
-@app.route('/auto_answer')
-def auto_answer():
-    params = {
-        'title': 'Анкета',
-        'surname': 'Сусанин',
-        'name': 'Иван',
-        'education': '4 класса',
-        'profession': 'экскурсовод',
-        'sex': 'м',
-        'motivation': 'Всегда мечтал застрять на Марсе',
-        'ready': 'готов как никогда'
-    }
-    return render_template('auto_answer.html', **params)
+    session.add(job)
+    session.commit()
 
 
 if __name__ == '__main__':
-    app.run(port=8080, host='127.0.0.1')
+    main()
