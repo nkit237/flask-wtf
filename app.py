@@ -1,12 +1,11 @@
-from multiprocessing.pool import job_counter
-
-from flask import Flask, render_template, redirect, request, make_response, session
+from flask import Flask, render_template, redirect, request, make_response, session, jsonify
 from flask_login import LoginManager, login_user, logout_user, login_required
 from data import db_session
 from data.jobs import Jobs
 from data.users import User
 from data import jobs_api
 from forms import RegisterForm, LoginForm, AddJob
+from flask import make_response
 
 db_session.global_init("db/mars_explorer.db")
 app = Flask(__name__)
@@ -16,6 +15,16 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
+
+
+@app.errorhandler(400)
+def bad_request(_):
+    return make_response(jsonify({'error': 'Bad Request'}), 400)
 
 
 @login_manager.user_loader
