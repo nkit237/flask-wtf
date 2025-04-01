@@ -14,7 +14,6 @@ def get_geo_info(city_name, type_info):
 
         response = requests.get(url, params)
         json = response.json()
-        print(json)
 
         return \
             json['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty'][
@@ -64,7 +63,6 @@ def get_country(city):
 
     response = requests.get(url, params)
     json = response.json()
-    print(json)
 
     return \
         json['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty'][
